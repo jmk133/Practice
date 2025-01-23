@@ -1,17 +1,22 @@
 import sys
 
-left = list(sys.stdin.readline().strip()) # sys.stdin.readline()은 한 줄 단위로 입력 받음, '\n' 같이 입력 받음, 문자열로 입력 받음
-right = []
+word = list(sys.stdin.readline().strip()) # sys.stdin.readline()은 한 줄 단위로 입력 받음, '\n' 같이 입력 받음, 문자열로 입력 받음
+word2 = []
 
 for _ in range(int(sys.stdin.readline())):
     command = sys.stdin.readline().split()
-    if command[0] == "L" and left:
-        right.append(left.pop())
-    elif command[0] == "D" and right:
-        left.append(right.pop())
-    elif command[0] == "B" and left:
-        left.pop()
+    if command[0] == "L" and word:
+        word2.append(word.pop())
+    elif command[0] == "D" and word2:
+        word.append(word2.pop())
+    elif command[0] == "B" and word:
+        word.pop()
     elif command[0] == "P":
-        left.append(command[1])
+        word.append(command[1])
 
-print("".join(left + right[::-1]))
+print("".join(word + word2[::-1]))
+
+// 시간복잡도 고려 => stack을 커서 왼쪽과 오른쪽을 나타내는 2개의 것으로 분류
+// for문 안에서 입력받은 command[0]가 L과 같고 stack_l이 True(값이 있으면)면, stack_l의 마지막 값을 pop해서 stack_r 마지막자리에 append해서 넣는다.
+// for문 안에서 입력받은 command[0]가 D와 같고 stack_r이 True(값이 있으면)면, stack_r의 마지막 값을 pop해서 stack_l 마지막자리에 append해서 넣는다.
+// word2 내부는 역순으로 합치는 것 주의
