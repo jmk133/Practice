@@ -1,0 +1,16 @@
+#17298
+n = int(input())
+number = list(map(int, input().split()))
+stack = []
+ans = [-1]*n
+
+for i in range(n):
+  while stack and number[stack[-1]] < number[i]: #stack이 유효하거나 number[top] < number[i]인 경우(오큰수인 경우)
+      idx = stack.pop()
+      ans[idx] = number[i]
+  stack.append(i)
+
+print(*ans)
+
+// 스택에 값을 push하면 ans에 index에 맞추어서 값을 기록할 수 없음
+// index를 push 하는 발상 배워가기
