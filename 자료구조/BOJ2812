@@ -1,0 +1,22 @@
+#2812
+import sys
+input = sys.stdin.readline
+n, k = map(int,input().split())
+number = list(input().rstrip())
+stack = []
+num = 0
+
+for i in range(n):
+  while stack and stack[-1] < number[i] and num < k: # stack이며 stack 최상단 < 현재 탐색하는 수이며 지운 수의 개수(num) < k개인 동안 진행
+    stack.pop()
+    num += 1
+  stack.append(number[i])
+
+print(''.join(stack[:n-k]))
+
+// brute force 방식은 시간 초과로 인해 불가(O(nCk)), stack 사용
+// 그리디 알고리즘이라는 부분에 힌트를 얻어서 최대한 앞에 큰 수가 오는게 중요하기에 삭제하는 수의 개수가 k개 이하일때까지 앞에서부터 pop해 나아가며 쌓는 구조로 진행
+// O(n) 시간복잡도
+//  6 2, 999899와 같이 동일한 수일 경우 지우지 않았기에 반례 반영해서 마지막 출력을 n-k개만큼 출력하도록 함
+
+p.s. 그리디 알고리즘을 쓰는 이유: 숫자의 순서가 바뀌지 않기 때문에 가능
