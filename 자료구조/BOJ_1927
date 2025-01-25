@@ -1,0 +1,17 @@
+#1927
+import sys
+from queue import PriorityQueue
+n = int(sys.stdin.readline())
+pq = PriorityQueue()
+temp = []
+
+for i in range(n):
+  x = int(sys.stdin.readline())
+  if x == 0:
+    if pq.qsize() != 0:
+      curr = pq.get()
+      print(curr)
+    else:
+      print(0)
+  else:
+    pq.put(x)
