@@ -1,0 +1,72 @@
+#5430
+from collections import deque
+
+t = int(input())
+
+def answer(word, arr):
+    for cmd in word:
+        if cmd == "R":
+            arr.reverse()
+        elif cmd == "D":
+            if arr:
+                arr.popleft()
+            else:
+                return "error"
+    return arr
+
+ans = []
+for _ in range(t):
+    word = input()
+    n = int(input())
+    arr = input().rstrip()[1:-1] # 입력 처리
+    arr = deque(arr.split(",")) if arr else deque()  # 빈 배열 처리
+    result = answer(word, arr)
+    ans.append(result) # 출력 처리
+
+for result in ans:
+    if result == "error":
+        print("error")
+    else:
+        print("[" + ",".join(result) + "]")
+
+// 시간 초과로 인해 수정
+import sys
+from collections import deque
+
+t = int(input())
+
+for i in range(t):
+    p = sys.stdin.readline().rstrip()
+    n = int(input())
+    arr = sys.stdin.readline().rstrip()[1:-1].split(",")
+    dq = deque(arr)
+
+    reverse, front = 0, 0
+    flag = 0
+    if n == 0:
+        dq = []
+        front = 0
+        back = 0
+
+    for j in p:
+        if j == 'R':
+            reverse += 1
+        elif j == 'D':
+            if len(dq) < 1:
+                flag = 1
+                print("error")
+                break
+            else:
+                if reverse % 2 == 0:
+                    dq.popleft()
+                else:
+                    dq.pop()
+    if flag == 0:
+        if reverse % 2 == 0:
+            print("[" + ",".join(dq) + "]")
+        else:
+            dq.reverse()
+            print("[" + ",".join(dq) + "]")
+
+Reverse를 매번 실행하지 x => 뒤집는 횟수를 저장한 후, 뒤집는 횟수가 홀수 번 일때만 뒤집도록 수정
+짝수번을 뒤집게 되면 안뒤집는 상황이랑 동치
