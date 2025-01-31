@@ -1,0 +1,15 @@
+#2750
+n = int(input())
+temp = []
+for _ in range(n):
+  temp.append(int(input()))
+
+for i in range(n-1): # bubble sort로 구현, 내림차순으로 집어넣기
+  for j in range(n-1-i):
+    if temp[j] < temp[j+1]:
+      temp[j], temp[j+1] = temp[j+1], temp[j]
+
+while True: # stack으로 빼내기
+  if not temp:
+    break
+  print(temp.pop())
