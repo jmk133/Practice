@@ -1,0 +1,35 @@
+#1427
+n = input()
+temp = list(map(int, n))  # 숫자를 리스트로 변환
+
+def divide(temp, left, right):
+    if left == right:  # 종료 조건: 하나의 원소만 남았을 때
+        return [temp[left]]
+
+    mid = (left + right) // 2
+    left_part = divide(temp, left, mid)  # 왼쪽 부분 정렬
+    right_part = divide(temp, mid + 1, right)  # 오른쪽 부분 정렬
+
+    return merge(left_part, right_part)
+
+def merge(left, right):
+    result = []
+    i = j = 0
+
+    while i < len(left) and j < len(right):
+        if left[i] > right[j]:  # 내림차순 정렬 ( > 사용)
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+
+    result.extend(left[i:])
+    result.extend(right[j:])
+    
+    return result
+
+answer = divide(temp, 0, len(temp) - 1)
+print(''.join(map(str,answer)))  # 리스트를 문자열로 변환 후 출력
+
+시간복잡도: O(nlogn)인 정렬을 사용하고자 병합정렬 사용(divide and conquer, 재귀함수 원리 사용)
