@@ -1,0 +1,47 @@
+#1431
+n = int(input())
+arr = []
+for _ in range(n):
+  arr.append(input())
+
+for i in range(n-1):
+  for j in range(n-1-i):
+    if len(arr[j]) > len(arr[j+1]):
+      arr[j], arr[j+1] = arr[j+1], arr[j]
+
+    elif len(arr[j]) == len(arr[j+1]):
+      a, b = 0, 0
+      for k in range(len(arr[j])):
+        if arr[j][k].isdigit():
+          a += int(arr[j][k])
+        if arr[j+1][k].isdigit():
+          b += int(arr[j+1][k])
+      if a > b:
+        arr[j], arr[j+1] = arr[j+1], arr[j]
+    
+      elif a == b:
+        if arr[j] > arr[j+1]:
+          arr[j], arr[j+1] = arr[j+1], arr[j]
+
+for i in range(n):
+  print(arr[i])
+
+//bubble sort 활용
+// sort 사용 시 labmda를 활용해서 구축할 수 있음
+n = int(input())
+
+def sum_num(inputs):
+    result = 0
+    for i in inputs:
+        if i.isdigit():
+            result+=int(i)
+    return result
+
+arr = []
+for i in range(n):
+    a = input()
+    arr.append(a)
+
+arr.sort(key = lambda x:(len(x), sum_num(x), x))
+for i in arr:
+    print(i)
