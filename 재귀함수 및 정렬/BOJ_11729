@@ -1,0 +1,13 @@
+#11729
+n = int(input())
+
+def move(n,fr,temp,to):
+  if n == 1:
+    print(fr,to)
+    return
+  move(n-1,fr,to,temp) # n-1개를 from에서 temp로
+  print(fr,to)
+  move(n-1,temp,fr,to) # n-1개를 temp에서 to로
+
+print(2**n-1)
+move(n,1,2,3)
