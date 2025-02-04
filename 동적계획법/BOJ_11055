@@ -1,0 +1,45 @@
+#11055
+n = int(input())
+a = list(map(int,input().split()))
+dp = [0]*n
+for i in range(n):
+  dp[i] = a[i]
+
+for i in range(1,n):
+  temp = -1e9
+  flag = False
+  for j in range(i):
+    if a[j] < a[i]:
+      temp = max(temp,dp[j]) # 반례: 20 10 15와 같은 경우 막기 위해 flag 변수 도입
+      flag = True
+  if flag:
+    dp[i] += temp # i보다 앞에 있는 것 중 가장 max값을 dp에 더해나가면서 갱신
+  
+print(max(dp))
+
+다른 풀이: d[i] = a[i]를 마지막으로 하는 증가 수열 중 가장 합이 큰 수열의 합
+d[i] = max(d[j]+a[i]) for j = 0부터 i-1까지 s.t. a[j] < a[i]
+#include <stdio.h>
+#include <algorithm>
+using namespace std;
+int D[1003];
+int main(void) {
+    int A[1003];
+    int N;
+    scanf("%d", &N);
+    for (int i = 0; i < N; i++)
+        scanf("%d", &A[i]);
+    
+    D[0] = A[0];
+    int mx = D[0];
+    for (int i = 1; i < N; i++) {
+        D[i] = A[i];
+        for (int j = 0; j < i; j++) {
+            if (A[j] >= A[i])
+                continue;
+            D[i] = max(D[i], D[j] + A[i]);
+        }
+        mx = max(mx, D[i]);
+    }
+    printf("%d", mx);
+}
