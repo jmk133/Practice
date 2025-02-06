@@ -1,0 +1,29 @@
+#9465
+t = int(input())
+
+for _ in range(t):
+    n = int(input())
+    temp = [list(map(int, input().split())) for _ in range(2)]
+    
+    if n == 1:
+        print(max(temp[0][0], temp[1][0]))
+        continue
+
+    dp = [[0] * n for _ in range(2)]
+    dp[0][0] = temp[0][0]
+    dp[1][0] = temp[1][0]
+    dp[0][1] = temp[1][0] + temp[0][1]
+    dp[1][1] = temp[0][0] + temp[1][1]
+
+    for i in range(2, n):
+        dp[0][i] = max(dp[1][i-1], dp[1][i-2]) + temp[0][i]
+        dp[1][i] = max(dp[0][i-1], dp[0][i-2]) + temp[1][i]
+
+    print(max(dp[0][n-1], dp[1][n-1]))
+
+1. dp[n]은 1)n번째를 선택하고, 포함했을 때의 최적값 혹은 2)n번째까지 고려했을 때의 최적값을 의미한다.
+2. n열의 스티커 중 최댓값을 구하는 데에 있어서 마지막 n열을 무조건 선택해야 하므로 1)case라고 접근하고 시작하자.
+3. target[0][n]을 골랐을 경우, dp[1][n-1]에 이어서 고르는 경우와 dp[1][n-2]에 이어서 고르는 경우 2가지로 나누어서 생각할 수 있다.
+4. dp[i][n-3]을 마지막으로 선택했던 경우는 고려하지 않는다. (중간에 무조건 다른 스티커를 선택할 수 있는 구조이기 때문이다.)
+https://beyond-common-sense.tistory.com/10
+https://m.blog.naver.com/occidere/220786307316
