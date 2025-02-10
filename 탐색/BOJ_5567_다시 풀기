@@ -1,0 +1,36 @@
+#5567
+from collections import deque
+
+# 입력 받기
+n = int(input())  
+m = int(input())  
+gp = [[] for _ in range(n + 1)]  
+visited = [False] * (n + 1) 
+
+# 친구 관계 입력
+for _ in range(m):
+    a, b = map(int, input().split())
+    gp[a].append(b)
+    gp[b].append(a)
+
+def bfs(x):
+    dq = deque([(x, 0)])  
+    visited[x] = True
+    cnt = 0  # 초대할 사람 수
+
+    while dq:
+        curr, depth = dq.popleft()
+
+        if depth >= 2:  # 친구의 친구까지만 탐색
+            continue
+
+        for friend in gp[curr]:
+            if not visited[friend]:
+                visited[friend] = True
+                cnt += 1
+                dq.append((friend, depth + 1))
+
+    return cnt
+
+# 상근이(1번)의 결혼식에 초대할 사람 수 출력
+print(bfs(1))
