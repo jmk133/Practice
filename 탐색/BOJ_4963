@@ -1,0 +1,75 @@
+#4963
+from collections import deque
+import sys
+input = sys.stdin.readline
+dx = [-1,-1,-1,0,0,1,1,1]
+dy = [-1,0,1,-1,1,-1,0,1]
+
+def bfs(i,j):
+  dq = deque()
+  dq.append((i,j))
+  visited[i][j] = True
+  
+  while dq:
+    curr = dq.popleft()
+    for k in range(8):
+      nx = curr[0] + dx[k]
+      ny = curr[1] + dy[k]
+      if nx >= 0 and ny >= 0 and nx < h and ny < w:
+        if not visited[nx][ny] and gp[nx][ny] == 1: # 방문하지 않고 1인 경우(육지인 경우)에만 방문할 수 있음
+          dq.append((nx,ny))
+          visited[nx][ny] = True # bfs에서 방문 처리하는 부분 주의
+  return
+  
+  
+
+while True:
+  cnt = 0
+  w, h = map(int,input().split())
+  visited = [[False for _ in range(w)] for _ in range(h)]
+  if w == 0 and h == 0:
+    break
+  
+  gp = []
+  for _ in range(h):
+    gp.append(list(map(int,input().split())))
+  
+  for i in range(h):
+    for j in range(w):
+      if gp[i][j] == 1 and not visited[i][j]: # 틀린 부분: 이미 방문한 섬에 대해서는 bfs 진행 x
+        bfs(i,j)
+        cnt += 1
+  
+  print(cnt)
+
+import sys
+from collections import deque
+d=[(1,0),(1,1),(0,1),(-1,1),(-1,0),(-1,-1),(0,-1),(1,-1)] #하부터 시계반대방향으로 순회 ,하 대각선 우 대각선 상 대각선 좌 대각선
+def bfs(x, y):
+    arr[x][y]=0
+    que = deque()
+    que.append((x, y))
+    while que:
+        x, y = que.popleft()
+        for i in range(8):
+            nx = x + d[i][0]
+            ny = y + d[i][1]
+            if (0<= nx < h and 0<= ny < w) and arr[nx][ny]:
+                    arr[nx][ny]=0
+                    que.append((nx, ny))
+
+1. 기존 코드는 방문 여부, 섬인지 여부를 따로 확인했지만 아래 코드의 경우 섬이 1, 바다가 0이라는 점을 고려해서
+이미 방문한 점은 0으로 바꿔버림으로써 방문 여부와 섬/바다 여부를 통합해서 간소화시켜 해결했다.
+while True:
+  w,h=map(int, sys.stdin.readline().rstrip().split())
+  if w==0 and h==0: 
+    break
+  cnt=0
+  arr=[ list(map(int, sys.stdin.readline().rstrip().split())) for _ in range(h) ]
+  for i in range(h):
+    for j in range(w):
+      if arr[i][j]:  
+            bfs(i,j)
+            cnt+=1
+  print(cnt)
+출처: https://choihjhj.tistory.com/entry/백준파이썬-4963번-섬의-개수 [개발 블로그:티스토리]
