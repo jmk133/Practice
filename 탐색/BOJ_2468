@@ -1,0 +1,41 @@
+#2468
+import sys
+sys.recursionlimit(10000)
+n = int(input())
+gp = []
+dx = [-1,0,1,0]
+dy = [0,1,0,-1] # 상하좌우 이동 시 좌표...주의
+
+def dfs(x,y):
+  visited[x][y] = 1
+  for i in range(4):
+    nx = x + dx[i]
+    ny = y + dy[i]
+    if 0 <= nx < n and 0 <= ny < n:
+      if not visited[nx][ny] and gp[nx][ny] != 0:
+        dfs(nx,ny)
+  
+maximum = -1e9
+for _ in range(n):
+  myList = list(map(int,input().split()))
+  gp.append(myList)
+  maximum = max(maximum,max(myList))
+
+ans = 1
+for k in range(1,maximum+1):
+  visited = [[0 for _ in range(n)] for _ in range(n)] # visited 갱신 필요하므로 반복문 안으로 넣기
+  cnt = 0 # cnt 갱신 필요하므로 반복문 안으로 넣기
+  for i in range(n):
+    for j in range(n):
+      if gp[i][j] <= k:
+        gp[i][j] = 0
+
+  for i in range(n):
+    for j in range(n):
+      if not visited[i][j] and gp[i][j] != 0:
+        dfs(i,j)
+        cnt += 1
+  
+  ans = max(ans,cnt)
+
+print(ans)
