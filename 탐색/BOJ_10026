@@ -1,0 +1,61 @@
+#10026
+import sys
+from collections import deque
+input = sys.stdin.readline
+
+n = int(input())
+gp = []
+for _ in range(n):
+  gp.append(list(input().strip()))
+
+dx = [-1,0,1,0]
+dy = [0,-1,0,1]
+visited = [[False for _ in range(n)] for _ in range(n)]
+visited_t = [[False for _ in range(n)] for _ in range(n)]
+
+def bfs(x,y):
+  dq = deque()
+  dq.append((x,y))
+  visited[x][y] = True
+    
+  while dq:
+    curr = dq.popleft()
+    x, y = curr[0], curr[1]
+    for i in range(4):
+      nx = x + dx[i]
+      ny = y + dy[i]
+      if 0 <= nx < n and 0 <= ny < n and not visited[nx][ny]:
+        if gp[x][y] == gp[nx][ny]:
+          dq.append((nx,ny))
+          visited[nx][ny] = True
+  return
+
+def bfs_t(x,y):
+  visited_t[x][y] = True
+  dq = deque()
+  dq. append((x,y))
+  
+  while dq:
+    curr = dq.popleft()
+    x, y = curr[0], curr[1]
+    for i in range(4):
+      nx = x + dx[i]
+      ny = y + dy[i]
+      if 0 <= nx < n and 0 <= ny < n and not visited_t[nx][ny]:
+        if ((gp[x][y] == gp[nx][ny]) | ((gp[x][y] == 'G') & (gp[nx][ny] == 'R')) | ((gp[x][y] == 'R') & (gp[nx][ny] == 'G'))):
+          dq.append((nx,ny))
+          visited_t[nx][ny] = True
+  return
+
+cnt = 0
+rel = 0
+for i in range(n):
+  for j in range(n):
+    if not visited[i][j]:
+      bfs(i,j)
+      cnt += 1
+    if not visited_t[i][j]:
+      bfs_t(i,j)
+      rel += 1
+
+print(cnt, rel)
