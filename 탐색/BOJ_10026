@@ -24,7 +24,7 @@ def bfs(x,y):
     for i in range(4):
       nx = x + dx[i]
       ny = y + dy[i]
-      if 0 <= nx < n and 0 <= ny < n and not visited[nx][ny]:
+      if 0 <= nx < n and 0 <= ny < n and not visited[nx][ny]: // nx, ny 좌표가 범위 안에 있는지 먼저 판단해야 함
         if gp[x][y] == gp[nx][ny]:
           dq.append((nx,ny))
           visited[nx][ny] = True
