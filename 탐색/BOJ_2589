@@ -1,0 +1,44 @@
+#2589
+import sys
+input = sys.stdin.readline
+from collections import deque
+l, w = map(int,input().split())
+gp = [list(input().strip()) for _ in range(l)]
+dx = [0,1,0,-1]
+dy = [-1,0,1,0]
+time = [[0 for _ in range(w)] for _ in range(l)]
+visited = [[False for _ in range(w)] for _ in range(l)]
+
+def bfs(x,y):
+  dq = deque()
+  dq.append((x,y))
+  visited[x][y] = True
+  maximum = 1
+
+  while dq:
+    curr = dq.popleft()
+    for i in range(4):
+      nx = curr[0] + dx[i]
+      ny = curr[1] + dy[i]
+      if 0 <= nx < l and 0 <= ny < w and not visited[nx][ny] and gp[nx][ny] == 'L':
+        dq.append((nx,ny))
+        visited[nx][ny] = True
+        time[nx][ny] = time[curr[0]][curr[1]] + 1 # 갱신 시, 현재 좌표에서의 거리를 나타내도록 해야 함
+        maximum = max(maximum,time[nx][ny])
+  return maximum
+
+ans = 1
+for i in range(l):
+  for j in range(w):
+    if gp[i][j] == 'L':
+      ans = max(ans,bfs(i,j))
+      visited = [[False for _ in range(w)] for _ in range(l)]
+      time = [[0 for _ in range(w)] for _ in range(l)]
+
+print(ans)
+
+// n이 매우 작으므로 brute force 형태를 고려할 수 있다.
+1. 모든 육지에 대해서 bfs를 돌린다.
+bfs의 경우, 최단경로를 찾을 때 주로 사용하는 알고리즘인데 dfs는 시작점->도착점까지의 거의 모든 무한 경로를 탐색하므로 거의 사용하지 않는다.
+2. bfs를 돌릴 시에 visited, time 리스트를 초기화하며 갱신 받지 않도록 한다.
+3. time 중 가장 큰 값을 저장하며 출력하도록 한다.
