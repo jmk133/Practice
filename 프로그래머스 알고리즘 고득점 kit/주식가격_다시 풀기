@@ -1,0 +1,99 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+
+// prices_len은 배열 prices의 길이입니다.
+int* solution(int prices[], size_t prices_len) {
+    // return 값은 malloc 등 동적 할당을 사용해주세요. 할당 길이는 상황에 맞게 변경해주세요.
+    int* answer = (int*)malloc(sizeof(int)*prices_len);
+    int stack[100000] = {0,};
+    int top = -1;
+
+    for (int i = 0; i < prices_len; i++){
+        while (top >= 0 && prices[i] < prices[stack[top]]){
+            answer[stack[top]] = i - stack[top];
+            top--;
+        }
+        stack[++top] = i;
+    }
+
+    while (top >= 0){
+        int temp = stack[top--];
+        answer[temp] = prices_len - 1 - temp;
+    }
+    return answer;
+}
+
+solution: 스택, 큐를 사용해서 풀이한다.
+1. prices 배열을 탐색하며 만약에 stack 최상단부의 가격이 현재 탐색하는 가격보다 높을 경우(=가격이 하락한 경우) stack에서 pop을 진행하고, answer에 i - stack[top]으로써 주식 가격이 떨어지지 않은 기간을 기록한다.
+2. 그렇지 않은 경우에는 stack에 현재 탐색하는 원소의 index를 push한다.
+3. 모든 원소를 탐색하고 나서 stack에 남은 원소는 끝까지 값이 떨어지지 않은 경우이다. 따라서, 전부 pop하며 '전체 길이- index'로 answer에 집어넣는다.
+
+다른 사람 풀이:
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+
+typedef struct node {
+    int val;
+    int idx;
+}Node;
+
+Node stack[100002];
+int stackIdx = -1;
+
+void push(int val, int idx) {
+    stackIdx++;
+    stack[stackIdx].val = val;
+    stack[stackIdx].idx = idx;
+}
+
+bool empty() {
+    if (stackIdx < 0) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+int top() {
+    return stack[stackIdx].val;
+}
+
+Node pop() {
+    return stack[stackIdx--];
+}
+
+// prices_len은 배열 prices의 길이입니다.
+int* solution(int prices[], size_t len) {
+    // return 값은 malloc 등 동적 할당을 사용해주세요. 할당 길이는 상황에 맞게 변경해주세요.
+    int* answer = (int*)malloc(sizeof(int) * len);
+
+    push(prices[0], 0);
+    for (int i = 1; i < len; i++) {
+        int price = prices[i];
+        if (top() > price) {
+            while (!empty() && top() > price) {
+                Node temp = pop();
+                answer[temp.idx] = i - temp.idx;
+            }
+            push(price, i);
+        }
+        else {
+            push(price, i);
+        }
+    }
+
+    while(!empty()) {
+        Node temp = pop();
+        answer[temp.idx] = len - 1 - temp.idx;
+    }
+
+    /*for (int i = 0; i < len; i++) {
+        printf("%d ", answer[i]);
+    }
+    printf("\n");*/
+
+    return answer;
+}
