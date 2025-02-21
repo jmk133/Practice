@@ -24,6 +24,7 @@ int* solution(int prices[], size_t prices_len) {
     return answer;
 }
 
+핵심 아이디어는 스택에 (현재 값을 기준으로) 값이 떨어지지 않은 주식의 인덱스를 저장하는 것이다. 매 반복마다 현재 값보다 큰 주식이 있다면, 즉 가격이 떨어진 주식이 있다면 스택에서 제거하며 정답을 갱신해준다.
 solution: 스택, 큐를 사용해서 풀이한다.
 1. prices 배열을 탐색하며 만약에 stack 최상단부의 가격이 현재 탐색하는 가격보다 높을 경우(=가격이 하락한 경우) stack에서 pop을 진행하고, answer에 i - stack[top]으로써 주식 가격이 떨어지지 않은 기간을 기록한다.
 2. 그렇지 않은 경우에는 stack에 현재 탐색하는 원소의 index를 push한다.
