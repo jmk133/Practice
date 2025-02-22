@@ -1,0 +1,54 @@
+1. 상계와 하계(upper bound와 lower bound)
+-> 값을 찾을 때 원하는 값이 없는 경우, 신호를 반환하는 일반적인 이진 탐색과 달리 상계, 하계를 사용하면 찾고자 하는 값 혹은 그 값의 초과값이 처음 나타는 위치를 찾을 수 있다.
+-> '특정 값을 어느 위치에 삽입' 해야 하는지 탐색 할 때 많이 사용한다.
+
+1) 상계: 찾고자 하는 값(target)보다 큰 값의 처음 위치를 반환한다.
+public class UpperBound {
+ 
+    public static void main(String[] args) {
+        int[] array = {1, 3, 3, 3, 4, 6, 7, 7, 14, 14, 16, 20};
+        int target = 7;
+ 
+        int left = 0;
+        int right = array.length - 1;
+        while (left < right) {
+            int mid = (left + right) / 2;
+ 
+            if (array[mid] <= target) {
+                left = mid + 1;
+                continue;
+            }
+            right = mid;
+        }
+ 
+        System.out.println("right = " + right);
+        System.out.println("array[right] = " + array[right]);
+    }
+}
+해설: mid값이 target과 같아도 left를 갱신한다. target과 같은 값이어도 범위를 줄이며 target보다 큰 값이 나오도로 한다.
+또한, 일반 이진 탐색과 달리 right를 mid - 1로 갱신하지 않고 mid로 갱신한다. 결과적으로 결괏값을 출력 시 right를 사용한다.
+
+2) 하계: target보다 크거나 같은 값의 처음 위치를 반환한다.
+public class LowerBound {
+ 
+    public static void main(String[] args) {
+        int[] array = {1, 3, 3, 3, 4, 6, 7, 7, 14, 14, 16, 20};
+        int target = 7;
+ 
+        int left = 0;
+        int right = array.length - 1;
+        while (left < right) {
+            int mid = (left + right) / 2;
+ 
+            if (array[mid] < target) {
+                left = mid + 1;
+                continue;
+            }
+            right = mid;
+        }
+ 
+        System.out.println("right = " + right);
+        System.out.println("array[right] = " + array[right]);
+    }
+}
+해설: 상계와 달리 target보다 작은 경우에만 left를 갱신한다. right는 mid로 갱신하기에 결괏값은 항상 right에 위치한다.
