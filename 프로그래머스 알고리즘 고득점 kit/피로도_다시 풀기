@@ -1,0 +1,88 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+
+// dungeons_rows는 2차원 배열 dungeons의 행 길이, dungeons_cols는 2차원 배열 dungeons의 열 길이입니다.
+int check[8] = {0,};
+int cnt = 0;
+
+void dfs(int k, int** dungeons, int rows, int n){
+    if (cnt < n) cnt = n;
+
+    for (int i = 0; i < rows; i++){
+        if (!check[i] && dungeons[i][0] <= k){
+            check[i] = 1;
+            dfs(k-dungeons[i][1], dungeons, rows, n+1);
+            check[i] = 0;
+        } 
+    }   
+}
+
+int solution(int k, int** dungeons, size_t dungeons_rows, size_t dungeons_cols) {
+    dfs(k,dungeons,dungeons_rows,0);
+    return cnt;
+}
+
+//solution: c언어에서 순열, 조합 등을 구현하는 방법으로써 dfs를 주로 사용한다는 점에 주의하자.
+
+//다른 풀이:
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+
+int orig=0;
+int user_tired=0;
+int max=0;
+int tmp_max=0;
+
+void swap(int *a, int *b ){
+    int tmp;
+    tmp = *a;
+    *a = *b;
+    *b = tmp;
+}
+
+int calc(int** arr, int n){ // 최소 피로도 조건을 만족하는 던전을 차례로 방문하며 탐험 개수를 세는 함수
+    tmp_max=0;
+    for(int i=0; i<n; i++){
+        if(user_tired >= arr[i][0]){
+            user_tired -= arr[i][1];
+            tmp_max++;
+        }
+    }
+    return tmp_max;
+}
+
+void permutation(int** arr, int n, int r, int depth){ // 재귀함수 함수
+    if(depth==r){ // depth가 r이 되면 종료
+        //for(int i=0; i<depth; i++)
+        //    printf("[%d][%d] ", arr[i][0], arr[i][1]);
+        //printf("\n");
+
+        user_tired = orig;
+        calc(arr, n);
+
+        if(max<tmp_max) max = tmp_max;
+
+        return;
+    }
+
+    for(int i=depth; i<n; i++){
+        swap(&arr[i], &arr[depth]);
+        permutation(arr, n, r, depth+1);
+        swap(&arr[i], &arr[depth]); // 제자리로 원위치
+    }
+}
+
+// dungeons_rows는 2차원 배열 dungeons의 행 길이, dungeons_cols는 2차원 배열 dungeons의 열 길이입니다.
+int solution(int k, int** dungeons, size_t dungeons_rows, size_t dungeons_cols) {
+    int answer = -1;
+
+    orig = k;
+
+    permutation(dungeons, dungeons_rows, dungeons_rows, 0);
+
+    answer = max;
+    return answer;
+}
+          
