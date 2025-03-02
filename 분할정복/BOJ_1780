@@ -1,0 +1,33 @@
+#1780
+n = int(input())
+gp = []
+for i in range(n):
+  gp.append(input().split())
+
+ans = {'-1':0, '0':0, '1':0}
+
+def divide(row,col,n):
+  now = gp[row][col]
+
+  for i in range(row,row+n):
+    for j in range(col,col+n):
+      if gp[i][j] != now: # 현재 종이 종류와 다른지 탐색하는 법
+        next = n // 3
+        divide(row, col, next) 
+        divide(row, col+next, next) 
+        divide(row, col+(next*2), next) 
+        divide(row+next, col, next) 
+        divide(row+next, col+next, next)
+        divide(row+next, col+(next*2), next) 
+        divide(row+(next*2), col, next)
+        divide(row+(next*2), col+next, next)
+        divide(row+(next*2), col+(next*2), next) 
+        return
+
+  ans[now] += 1
+  return
+
+divide(0,0,n)
+
+for i in ans.values():
+  print(i)
