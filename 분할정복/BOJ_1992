@@ -1,0 +1,27 @@
+#1992
+n = int(input())
+gp = []
+ans = []
+
+for _ in range(n):
+  gp.append(input())
+
+def divide(x,y,n):
+  now = gp[x][y]
+  for i in range(x,x+n):
+    for j in range(y,y+n):
+      if gp[i][j] != now:
+        next = n // 2
+        ans.append('(') # 4방면으로 분할 시작 시 '('
+        divide(x,y,next)
+        divide(x,y+next,next)
+        divide(x+next,y,next)
+        divide(x+next,y+next,next)
+        ans.append(')') # 4방면 탐색 끝나면 ')'
+        return
+
+  ans.append(now)
+  return
+
+divide(0,0,n)
+print(''.join(ans))
