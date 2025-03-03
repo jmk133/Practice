@@ -1,0 +1,55 @@
+#2961
+from itertools import combinations
+n = int(input())
+tmp = []
+ans = 1e9
+
+for _ in range(n):
+  s, b = map(int,input().split())
+  tmp.append((s,b))
+
+for i in range(1,n+1):
+  for comb in combinations(tmp,i): # 조합 순회하는 방법
+    S, B = 1, 0
+    for s, b in comb:
+      S *= s
+      B += b
+    ans = min(ans,abs(S-B))
+print(ans)
+
+다른 풀이:
+백트래킹 알고리즘 이용
+def makeFood(idx):
+    global answer
+
+    if idx == len(material):
+        cnt, s, b = 0, 1, 0
+
+        for i in range(len(visited)):
+            if visited[i]:
+                cnt += 1
+                s *= material[i][0]
+                b += material[i][1]
+
+        if cnt == 0:
+            return
+
+        answer = min(answer, abs(s - b))
+        return answer
+
+    visited[idx] = 1
+    makeFood(idx + 1)
+    visited[idx] = 0
+    makeFood(idx + 1)
+출처: https://w00ye0l.tistory.com/45 [열이의 개발블로그:티스토리]
+
+1. 재료 사용 시: 방문 처리하고 다음으로 넘어간다.
+2. 재료 사용하지 않을 시: 방문하지 않고 다음으로 넘어간다.
+ex)
+             makeFood(0)
+            /           \
+       재료 1 사용     재료 1 사용X
+       /       \         /       \
+  재료 2 사용  재료 2 X  재료 2 사용  재료 2 X
+   /    \      /   \    /    \      /    \
+재3 사용  X  사용  X  사용  X  사용  X  
