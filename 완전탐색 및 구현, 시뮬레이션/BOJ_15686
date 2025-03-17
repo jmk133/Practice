@@ -1,0 +1,38 @@
+#15686
+import math
+from itertools import combinations as cb
+
+n, m = map(int,input().split())
+gp = []
+house = []
+chick = []
+result = 1e9
+
+for _ in range(n):
+  gp.append(list(map(int,input().split())))
+
+# 각 도시 간 치킨 거리 구하기
+def distance(x1,y1,x2,y2):
+  result = abs(x1-x2) + abs(y1-y2)
+  return result
+
+# 치킨집 M개의 조합
+for i in range(n):
+  for j in range(n):
+    if gp[i][j] == 1:
+      house.append((i,j))
+    elif gp[i][j] == 2:
+      chick.append((i,j))
+chicken = list(cb(chick,m))
+
+# 도시의 치킨 거리 합 최종 출력 - 도움 받은 부분, loop문 구성
+for j in chicken:
+  ans = 0
+  for i in house:
+    temp = 1e9 # 집마다 최소 치킨 거리 최소화 - 도움 받은 부분
+    for k in range(m):
+      temp = min(temp,distance(j[k][0],j[k][1],i[0],i[1]))
+    ans += temp
+  result = min(result,ans)
+
+print(result)
